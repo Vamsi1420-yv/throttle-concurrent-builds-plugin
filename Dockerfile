@@ -1,13 +1,24 @@
-# Base image with Java 8 and Maven
-FROM maven:3.9.6-eclipse-temurin-8
+# Stage 1: Build the plugin
+FROM maven:3.9.6-eclipse-temurin-8 AS builder
 
-# Set working directory in container
 WORKDIR /app
 
-# Copy the plugin source code to the container
+# Add Jenkins repositories config
+COPY settings.xml /root/.m2/settings.xml
+
+# Copy the source code
 COPY . .
 
-# Build the plugin
-RUN mvn clean install -DskipTests
+# Force Maven to re-download dependencies and skip tests
+RUN mvn clean install -DskipTests -U
 
-# Final image doesn't need to run anything, it's just for build
+# Stage 2: Optional minimal image to hold only the HPI
+# (You can use this if deploying elsewhere, otherwise keep using `builder`)
+FROM openjdk:8-jdk-alpine
+
+WORKDIR /plugin
+
+# Copy the built plugin from the builder stage
+COPY --from=builder /app/target/*.hpi /plugin/
+
+CMD ["ls", "-l", "/plugin"]
