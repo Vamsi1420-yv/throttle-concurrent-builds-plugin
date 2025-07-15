@@ -1,24 +1,21 @@
-# Stage 1: Build the plugin
-FROM maven:3.9.6-eclipse-temurin-8 AS builder
+# Stage 1: Build with Java 11
+FROM maven:3.9.6-eclipse-temurin-11 as builder
 
 WORKDIR /app
 
-# Add Jenkins repositories config
+# Add Jenkins repo settings
 COPY settings.xml /root/.m2/settings.xml
 
-# Copy the source code
+# Copy plugin source
 COPY . .
 
-# Force Maven to re-download dependencies and skip tests
+# Clean install
 RUN mvn clean install -DskipTests -U
 
-# Stage 2: Optional minimal image to hold only the HPI
-# (You can use this if deploying elsewhere, otherwise keep using `builder`)
-FROM openjdk:8-jdk-alpine
+# Stage 2: Keep only the .hpi file
+FROM eclipse-temurin:11-jre
 
 WORKDIR /plugin
-
-# Copy the built plugin from the builder stage
-COPY --from=builder /app/target/*.hpi /plugin/
+COPY --from=builder /app/target/*.hpi .
 
 CMD ["ls", "-l", "/plugin"]
