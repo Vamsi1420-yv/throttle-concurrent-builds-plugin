@@ -39,8 +39,18 @@
     <encoding>UTF-8</encoding>
   </properties>
 
+  <dependencies>
+    <!-- Needed to resolve 'hudson.matrix' packages -->
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>matrix-project</artifactId>
+      <version>785.v06b_7f47b_c631</version>
+    </dependency>
+  </dependencies>
+
   <build>
     <plugins>
+      <!-- Compiler plugin for Java 8 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
