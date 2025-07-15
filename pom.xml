@@ -11,8 +11,8 @@
   </parent>
 
   <artifactId>throttle-concurrents</artifactId>
-  <packaging>hpi</packaging>
   <version>1.7.3-SNAPSHOT</version>
+  <packaging>hpi</packaging>
   <name>Jenkins Throttle Concurrent Builds Plugin</name>
   <description>Plugin to throttle the number of concurrent builds of a single job per node.</description>
   <url>https://plugins.jenkins.io/throttle-concurrents/</url>
@@ -63,6 +63,13 @@
       <url>https://repo.maven.apache.org/maven2</url>
     </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jenkins-releases</id>
+      <url>https://repo.jenkins-ci.org/releases/</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <scm>
     <connection>scm:git:https://github.com/jenkinsci/throttle-concurrent-builds-plugin.git</connection>
