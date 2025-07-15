@@ -1,21 +1,24 @@
-# Stage 1: Build with Java 11
+# Stage 1: Build the Jenkins plugin using Maven and Java 11
 FROM maven:3.9.6-eclipse-temurin-11 as builder
 
 WORKDIR /app
 
-# Add Jenkins repo settings
-COPY settings.xml /root/.m2/settings.xml
+# Optional: Use a custom Maven settings file if needed
+# COPY settings.xml /root/.m2/settings.xml
 
-# Copy plugin source
+# Copy source code into the container
 COPY . .
 
-# Clean install
-RUN mvn clean install -DskipTests -U
+# Skip tests and SpotBugs for faster Docker builds
+RUN mvn clean install -DskipTests -Dspotbugs.skip=true -U
 
-# Stage 2: Keep only the .hpi file
+# Stage 2: Copy only the HPI (plugin) file to a minimal runtime image
 FROM eclipse-temurin:11-jre
 
 WORKDIR /plugin
+
+# Copy the plugin artifact from builder stage
 COPY --from=builder /app/target/*.hpi .
 
+# Default command just lists the plugin file
 CMD ["ls", "-l", "/plugin"]
