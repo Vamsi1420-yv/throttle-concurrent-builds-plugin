@@ -8,7 +8,6 @@
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
     <version>4.66</version>
-    <relativePath />
   </parent>
 
   <artifactId>throttle-concurrents</artifactId>
@@ -41,12 +40,12 @@
   </properties>
 
   <dependencies>
-    <!-- Required for Matrix jobs support -->
+    <!-- Needed to resolve hudson.matrix.* classes -->
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>matrix-project</artifactId>
       <version>785.v06b_7f47b_c631</version>
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
